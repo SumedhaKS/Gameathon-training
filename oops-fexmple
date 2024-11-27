@@ -1,0 +1,53 @@
+using System;
+// we have a class - Animal. It has 2 behaviours, - make sound and - eat.
+// we have 2 animals Dog and cat. These have the behaviour of an animal.
+
+
+// Abstract class to define common properties of animals (Abstraction)
+public abstract class Animal
+{
+    public string Name { get; set; }                 // Encapsulation: Property
+
+    public void Eat()                               // Common behavior for all animals. ie., every animal will eat something.
+    {
+        Console.WriteLine($"{Name} is eating.");
+    }
+
+    public abstract void MakeSound();               // Abstract method to enforce implementation in derived classes
+}
+
+
+// Dog class inherits from Animal (Inheritance)
+public class Dog : Animal
+{
+    public override void MakeSound()                // Polymorphism: Different animals make different sounds
+    {
+        Console.WriteLine($"{Name} says: Woof!");
+    }
+}
+
+// Cat class inherits from Animal (Inheritance)
+public class Cat : Animal
+{
+    public override void MakeSound()                // Polymorphism
+    {
+        Console.WriteLine($"{Name} says: Meow!");
+    }
+}
+
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        // Create objects of Dog and Cat
+        Dog dog = new Dog { Name = "Buddy" };
+        Cat cat = new Cat { Name = "Whiskers" };
+
+        dog.Eat();                  // Encapsulation: Accessing properties and methods
+        dog.MakeSound();            // Polymorphism: Dog-specific sound
+
+        cat.Eat();                  
+        cat.MakeSound();           
+    }
+}
