@@ -1,0 +1,61 @@
+using System;
+public class Game
+{
+    // Class for a Character
+    public class Character                      // basic character definition
+    {
+        public string Name { get; set; }
+        public int Health { get; set; }
+        public int Damage { get; set; }
+
+        // Attack method
+        public void Attack(Character target)
+        {
+            target.Health -= this.Damage;
+            Console.WriteLine($"{Name} attacks {target.Name} and deals {Damage} damage!");
+        }
+    }
+
+    // Player class inherits from Character and has a special Heal method
+    public class Player : Character     // Let's define the hero here 
+    {
+        public void Heal()              // hero has the ability to heal
+        {
+            Health += 10;
+            Console.WriteLine($"{Name} heals and now has {Health} health.");
+        }
+    }
+
+    // Enemy class inherits from Character
+    public class Enemy : Character         // Let's define the enemy here
+    {
+        public void Taunt()                 // Enemy will attack back
+        {
+            Console.WriteLine($"{Name} says: 'You can't defeat me!'");
+        }
+    }
+
+    public static void Main(string[] args)
+    {
+        // Create a Player
+        Player player = new Player { Name = "Hero", Health = 100, Damage = 20 };          
+
+        // Create an Enemy
+        Enemy enemy = new Enemy { Name = "Goblin", Health = 50, Damage = 15 };
+
+        // Gameplay actions
+        Console.WriteLine("Game Start!");
+
+        player.Attack(enemy);                                                           // player attacks the enemy here
+        Console.WriteLine($"{enemy.Name} now has {enemy.Health} health.\n");
+
+        enemy.Taunt();                                                                  // enemy taunts back
+        enemy.Attack(player);                                                           // player attacks again
+        Console.WriteLine($"{player.Name} now has {player.Health} health.\n");
+
+        player.Heal();                                                                  // player is healing now
+        Console.WriteLine($"{player.Name} now has {player.Health} health.\n");
+
+        Console.WriteLine("Game Over!");
+    }
+}

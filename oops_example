@@ -1,0 +1,114 @@
+using System;
+
+namespace BankingSystem
+{
+    // Base class (Encapsulation and Abstraction)
+    public class Account
+    {
+        // Encapsulation: Private fields with public properties
+        private string accountHolderName;
+        private double balance;
+
+        public string AccountHolderName
+        {
+            get { return accountHolderName; }
+            set { accountHolderName = value; }
+        }
+
+        public double Balance
+        {
+            get { return balance; }
+            protected set { balance = value; } // Protected setter to restrict modification
+        }
+
+        public Account(string name, double initialBalance)
+        {
+            AccountHolderName = name;
+            Balance = initialBalance;
+        }
+
+        public virtual void Deposit(double amount) // Virtual for polymorphism
+        {
+            if (amount > 0)
+            {
+                Balance += amount;
+                Console.WriteLine($"Deposited {amount:C}. New balance: {Balance:C}");
+            }
+            else
+            {
+                Console.WriteLine("Invalid deposit amount.");
+            }
+        }
+
+        public virtual void Withdraw(double amount) // Virtual for polymorphism
+        {
+            if (amount > 0 && amount <= Balance)
+            {
+                Balance -= amount;
+                Console.WriteLine($"Withdrew {amount:C}. New balance: {Balance:C}");
+            }
+            else
+            {
+                Console.WriteLine("Invalid withdrawal amount.");
+            }
+        }
+    }
+
+    // Derived class (Inheritance)
+    public class SavingsAccount : Account
+    {
+        private double interestRate;
+
+        public double InterestRate
+        {
+            get { return interestRate; }
+            set { interestRate = value; }
+        }
+
+        public SavingsAccount(string name, double initialBalance, double interestRate)
+            : base(name, initialBalance) // Call base class constructor
+        {
+            InterestRate = interestRate;
+        }
+
+        // Overriding base class method
+        public void ApplyInterest()
+        {
+            double interest = Balance * InterestRate / 100;
+            Deposit(interest); // Reuse Deposit method
+            Console.WriteLine($"Applied interest: {interest:C}. New balance: {Balance:C}");
+        }
+
+        public override void Withdraw(double amount)
+        {
+            // Custom withdrawal rules
+            Console.WriteLine("Savings account withdrawal:");
+            base.Withdraw(amount);
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Create an instance of Account
+            Account myAccount = new Account("John Doe", 500);
+            myAccount.Deposit(200);
+            myAccount.Withdraw(100);
+
+            Console.WriteLine();
+
+            // Create an instance of SavingsAccount
+            SavingsAccount mySavings = new SavingsAccount("Jane Smith", 1000, 3);
+            mySavings.Deposit(300);
+            mySavings.ApplyInterest();
+            mySavings.Withdraw(500);
+
+            Console.WriteLine();
+
+            // Demonstrating polymorphism
+            Account accountRef = mySavings; // Polymorphism: Base class reference to derived class
+            accountRef.Withdraw(200);
+        }
+    }
+}
